@@ -1,0 +1,48 @@
+<div class="container">
+  <h2>{{welcome}}</h2>
+
+
+  <!-- ! Sintaxis Angigua -->
+  <!-- <ul>
+  <li *ngFor="let task in tasks">{{task}}</li>
+</ul> -->
+
+  <!-- * Sintaxis Nueva -->
+  <ul>
+    @for (task of tasks(); track $index) {
+    <li>{{$index + 1 + ": " + task}}</li>
+    }
+  </ul>
+  <p>Total: {{tasks().length}}</p>
+  <hr />
+
+  <h3>{{ "Hola, mi nombre es: " + name() + " y tengo " + age + " años"}}</h3>
+  <p>La suma de 3 + 3 es: {{3+3}}</p>
+
+  <hr />
+
+  <img [src]="img" width="200px" height="200px" alt="">
+  <input type="text" [value]="name()">
+  <button [disabled]="disabled">Click me</button>
+
+  <hr />
+
+  <p>Person: {{ person.name }}</p>
+
+  <hr />
+
+  <button (click)="clickHandler()">Click me!</button>
+  <button (dblclick)="clickHandler()">Double click me!</button>
+
+  <input type="text" [value]="name()" (change)="changeHandler($event)">
+
+  <p>(keydown)</p>
+  <input type="text" [value]="age" (keydown)="keydownHandler($event)">
+
+  <hr />
+
+  <h4>Signals</h4>
+
+  <input type="text" [value]="name()" (change)="changeHandler($event)">
+
+</div>
