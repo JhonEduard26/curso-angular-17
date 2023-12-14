@@ -1,3 +1,21 @@
 .container {
   padding: 2rem;
 }
+.box {
+  display: block;
+  height: 12px;
+  background-color: red;
+}
+.message-error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out
+}
+.message-error.show {
+  opacity: 1;
+}
+.invalid {
+  border: 2px solid red;
+}

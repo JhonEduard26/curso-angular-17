@@ -3,7 +3,14 @@
     <div class="container">
       <h1>My Day</h1>
       <p>All my tasks in one place</p>
-      <input class="new-todo" placeholder="Type new todo" autofocus type="text" (change)="addTask($event)" />
+      <input
+        class="new-todo"
+        placeholder="Type new todo"
+        autofocus
+        type="text"
+        [formControl]="newTaskCtrl"
+        (keydown.enter)="addTask()"
+      />
     </div>
   </header>
   <div class="container todoapp-wrapper">
@@ -52,10 +59,10 @@
       </ul>
     -->
     </section>
-    <!-- This footer should be hidden by default and shown when there are todos -->
     <footer class="footer">
-      <!-- This should be `0 items left` by default -->
-      <span class="todo-count"><strong>{{uncompletedTasks}}</strong> item left</span>
+      <span class="todo-count">
+        <strong>{{tasks().length}} </strong>@if (tasks().length > 1) {items} @else {item} left
+      </span>
       <!-- Remove this if you don't implement routing -->
       <ul class="filters">
         <li>

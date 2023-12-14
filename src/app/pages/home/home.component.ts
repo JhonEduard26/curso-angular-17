@@ -1,54 +1,67 @@
 import { Component, signal } from '@angular/core';
 import { Task } from '../../models/task.model';
+import { JsonPipe } from '@angular/common';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+
+// Genera un id aleatorio
+const uuid = () => Math.random().toString(16).slice(-4)
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [JsonPipe, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
   tasks = signal<Task[]>([
     {
-      id: 1,
+      id: uuid(),
       name: 'Instalar el angular CLI',
       completed: true
     },
     {
-      id: 2,
-      name: 'Crear proyecto',
-      completed: true
-    },
-    {
-      id: 3,
+      id: uuid(),
       name: 'Crear componentes',
       completed: false
     }
   ])
   uncompletedTasks = this.tasks().filter(task => !task.completed).length
 
-  addTask(event: Event) {
-    const target = event.target as HTMLInputElement
-    const input = target.value
-    const newTask = {
-      id: this.tasks.length + 1,
-      name: input,
-      completed: false
+  newTaskCtrl = new FormControl('', {
+    nonNullable: true,
+    validators: [
+      Validators.required,
+      Validators.minLength(3),
+    ]
+  })
+
+  addTask() {
+    if (this.newTaskCtrl.valid) {
+      const newTask = {
+        id: uuid(),
+        name: this.newTaskCtrl.value.trim(),
+        completed: false
+      }
+
+      if (newTask.name === '') return
+      this.tasks.update(tasks => [...tasks, newTask])
+      this.newTaskCtrl.reset()
     }
-    this.tasks.update(tasks => [...tasks, newTask])
-    target.value = ''
   }
 
-  deleteTask(id: number) {
+  deleteTask(id: string) {
     this.tasks.update(tasks => tasks.filter(task => task.id !== id))
   }
 
-  updateTask(id: number) {
+  updateTask(id: string) {
     this.tasks.update(tasks => {
       return tasks.map(task => {
         if (task.id === id) {
-          task.completed = !task.completed
+          return {
+            ...task,
+            completed: !task.completed
+          }
         }
         return task
       })
